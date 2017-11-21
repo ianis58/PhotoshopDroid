@@ -3,4 +3,5 @@
     <string name="photoshopdroid">PhotoshopDroid</string>
     <string name="btn_load_existing">Charger un dessin existant...</string>
     <string name="btn_create_new">Nouveau dessin</string>
+    <string name="btn_choose_color">Choisir couleur...</string>
 </resources>

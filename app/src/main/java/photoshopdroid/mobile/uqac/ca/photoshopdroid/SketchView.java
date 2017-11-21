@@ -10,6 +10,8 @@ import java.util.Random;
 
 public class SketchView extends View {
 
+    private int color;
+
     public SketchView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
@@ -18,10 +20,15 @@ public class SketchView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         Random rand = new Random();
-        canvas.drawRGB(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
+        //canvas.drawRGB(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
+        canvas.drawColor(color);
     }
 
     public void changeColor() {
         invalidate(); // redraws the view calling onDraw()
+    }
+
+    public void setColor(int color){
+        this.color = color;
     }
 }
