@@ -1,5 +1,6 @@
 package photoshopdroid.mobile.uqac.ca.photoshopdroid;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
@@ -42,7 +43,8 @@ public class SplashActivity extends AppCompatActivity implements ActivityCompat.
         btnNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(getBaseContext(), DrawActivity.class));
+                finish();
             }
         });
 
