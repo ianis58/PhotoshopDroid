@@ -1,6 +1,7 @@
 package photoshopdroid.mobile.uqac.ca.photoshopdroid;
 
 import android.graphics.Canvas;
+import android.graphics.Paint;
 
 public abstract class GeometricShape {
     enum ShapeType{
@@ -10,30 +11,30 @@ public abstract class GeometricShape {
         Rectangle
     }
 
-    private int color;
-    private int strokeWidth;
-    private BoundingBox boundingBox;
+    // How to paint the shape
+    protected Paint paint;
+    // Helps finding which shape to select on click
+    protected BoundingBox boundingBox;
 
     public GeometricShape(int color, int width){
-        // TODO: replace those magic numbers by default values read from xml file
-        color = 0;
-        width = 3;
+        paint.setColor(color);
+        paint.setStrokeWidth(width);
     }
 
     public void setColor(int newColor){
-        color = newColor;
+        paint.setColor(newColor);
     }
 
     public int getColor(){
-        return color;
+        return paint.getColor();
     }
 
-    public void setStrokeWidth(int newWidth){
-        strokeWidth = newWidth;
+    public void setStrokeWidth(float newWidth){
+        paint.setStrokeWidth(newWidth);
     }
 
-    public int getStrokeWidth(){
-        return strokeWidth;
+    public float getStrokeWidth(){
+        return paint.getStrokeWidth();
     }
 
     public abstract void draw(Canvas canvas);

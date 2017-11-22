@@ -1,21 +1,26 @@
 package photoshopdroid.mobile.uqac.ca.photoshopdroid;
 
-import java.util.List;
-import photoshopdroid.mobile.uqac.ca.photoshopdroid.GeometricShape;
-import photoshopdroid.mobile.uqac.ca.photoshopdroid.Point2D;
+import android.graphics.Canvas;
+import java.util.ArrayList;
 
 public abstract class PointsShape extends GeometricShape {
-    private List<Point2D> pointsList;
+    private ArrayList<Point2D> pointsList;
 
+    // On PointsShape creation, initialize the list of points
     public PointsShape(int color, int width){
         super(color, width);
+        pointsList = new ArrayList<Point2D>();
     }
 
-    public void draw(){
+    // Draws the consecutive lines that are in the PointsShape, using the PointsShape's parameters
+    public void draw(Canvas canvas){
         int i = 0;
 
         while (i < pointsList.size()){
-            // drawLine(pointsList[i], pointsList[i+1]);
+            canvas.drawLine(pointsList.get(i).getPosX(),
+                    pointsList.get(i).getPosY(),
+                    pointsList.get(i+1).getPosX(),
+                    pointsList.get(i+1).getPosY(), paint);
 
             i++;
         }

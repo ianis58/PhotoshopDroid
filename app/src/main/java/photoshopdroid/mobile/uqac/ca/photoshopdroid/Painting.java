@@ -27,10 +27,12 @@ public class Painting {
     private Canvas canvas;
 
     public Painting(){
+        // Default parameters for shapes
         currentlySelectedTool = PaintingShape.Line;
         currentStrokeWidth = PaintingWidth.Medium;
-        shapes = new ArrayList<GeometricShape>();
+        // Initialization of the painting and its items
         canvas = new Canvas();
+        shapes = new ArrayList<GeometricShape>();
     }
 
     public void RefreshPainting(){
@@ -44,8 +46,8 @@ public class Painting {
         currentlySelectedTool = toolType;
     }
 
-    public void SelectStrokeWidth(){
-
+    public void SelectStrokeWidth(PaintingWidth width){
+        currentStrokeWidth = width;
     }
 
     public void AddShape(GeometricShape d){

@@ -1,27 +1,27 @@
 package photoshopdroid.mobile.uqac.ca.photoshopdroid;
 
 public class Point2D {
-    private int posX;
-    private int posY;
+    private float posX;
+    private float posY;
 
-    public Point2D(int x, int y){
+    public Point2D(float x, float y){
         posX = x;
         posY = y;
     }
 
-    public int getPosX() {
+    public float getPosX() {
         return posX;
     }
 
-    public void setPosX(int posX) {
+    public void setPosX(float posX) {
         this.posX = posX;
     }
 
-    public int getPosY() {
+    public float getPosY() {
         return posY;
     }
 
-    public void setPosY(int posY) {
+    public void setPosY(float posY) {
         this.posY = posY;
     }
 }
