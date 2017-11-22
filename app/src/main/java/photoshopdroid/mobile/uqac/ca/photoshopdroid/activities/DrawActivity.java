@@ -1,11 +1,9 @@
 package photoshopdroid.mobile.uqac.ca.photoshopdroid.activities;
 
-import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,55 +29,31 @@ public class DrawActivity extends AppCompatActivity {
     private ImageView ivThickness;
     private ImageView ivClearSketch;
 
+    private ColorPicker cp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_draw);
 
-        sketch = (SketchView) findViewById(R.id.sketch);
-        viewColorPicker = findViewById(R.id.viewColorPicker);
-        ivBrush = (ImageView) findViewById(R.id.ivBrush);
-        ivDrawRectangles = (ImageView) findViewById(R.id.ivDrawRectangles);
-        ivSelectShape = (ImageView) findViewById(R.id.ivSelectShape);
-        ivThickness = (ImageView) findViewById(R.id.ivThickness);
-        ivClearSketch = (ImageView) findViewById(R.id.ivClearSketch);
-
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        sketch.init(metrics);
+        initViews();
+        setImageViewsOnClickListeners();
+        setImageViewsOnLongClickListeners();
 
         //pour plus de details, voir : https://github.com/Pes8/android-material-color-picker-dialog
-        final ColorPicker cp = new ColorPicker(DrawActivity.this);
+        cp = new ColorPicker(DrawActivity.this);
+        setColorPickerDialogCallback();
 
-        cp.setCallback(new ColorPickerCallback() {
-            @Override
-            public void onColorChosen(@ColorInt int color) {
-                sketch.setColor(color);
-                viewColorPicker.setBackgroundColor(color);
-                cp.dismiss();
-            }
-        });
 
-        viewColorPicker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cp.show();
-            }
-        });
+    }
+
+    private void setImageViewsOnLongClickListeners() {
 
         viewColorPicker.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 Toast.makeText(getBaseContext(), "Changer de couleur", Toast.LENGTH_SHORT).show();
                 return true;
-            }
-        });
-
-        ivBrush.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sketch.setDrawingMode(SketchView.SketchMode.BRUSH);
-                selectTool(ivBrush);
             }
         });
 
@@ -91,6 +65,59 @@ public class DrawActivity extends AppCompatActivity {
             }
         });
 
+        ivDrawRectangles.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getBaseContext(), "Dessiner des rectangles", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+
+        ivClearSketch.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getBaseContext(), "Effacer le Sketch", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+
+        ivThickness.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getBaseContext(), "Changer l'épaisseur des tracés", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+    }
+
+    private void setColorPickerDialogCallback() {
+        cp.setCallback(new ColorPickerCallback() {
+            @Override
+            public void onColorChosen(@ColorInt int color) {
+                sketch.setColor(color);
+                viewColorPicker.setBackgroundColor(color);
+                cp.dismiss();
+            }
+        });
+    }
+
+    private void setImageViewsOnClickListeners() {
+
+        viewColorPicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cp.show();
+            }
+        });
+
+        ivBrush.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sketch.setDrawingMode(SketchView.SketchMode.BRUSH);
+                selectTool(ivBrush);
+            }
+        });
+
         ivDrawRectangles.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,11 +126,11 @@ public class DrawActivity extends AppCompatActivity {
             }
         });
 
-        ivDrawRectangles.setOnLongClickListener(new View.OnLongClickListener() {
+        ivThickness.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(getBaseContext(), "Dessiner des rectangles", Toast.LENGTH_SHORT).show();
-                return true;
+            public void onClick(View v) {
+                DialogFragment dfThickness = new ThicknessDialogFragment();
+                dfThickness.show(getFragmentManager(), "");
             }
         });
 
@@ -129,39 +156,20 @@ public class DrawActivity extends AppCompatActivity {
                 confirmClear.show();
             }
         });
+    }
 
-        ivClearSketch.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(getBaseContext(), "Effacer le Sketch", Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
+    private void initViews() {
+        sketch = (SketchView) findViewById(R.id.sketch);
+        viewColorPicker = findViewById(R.id.viewColorPicker);
+        ivBrush = (ImageView) findViewById(R.id.ivBrush);
+        ivDrawRectangles = (ImageView) findViewById(R.id.ivDrawRectangles);
+        ivSelectShape = (ImageView) findViewById(R.id.ivSelectShape);
+        ivThickness = (ImageView) findViewById(R.id.ivThickness);
+        ivClearSketch = (ImageView) findViewById(R.id.ivClearSketch);
 
-        ivThickness.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment dfThickness = new ThicknessDialogFragment();
-                dfThickness.show(getFragmentManager(), "");
-            }
-        });
-
-        ivThickness.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(getBaseContext(), "Changer l'épaisseur des tracés", Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
-
-        //LinearLayout activityRootView = (LinearLayout) findViewById(R.id.draw_layout);
-        //Rect r = new Rect();
-        //activityRootView.getWindowVisibleDisplayFrame(r);
-        //int screenHeight = r.bottom - r.top - toolbar.getHeight();
-        //int screenWidth = r.width();
-
-        //Bitmap mBitmap = Bitmap.createBitmap(screenWidth, screenHeight, Bitmap.Config.ARGB_8888);
-        //Canvas mCanvas = new Canvas(mBitmap);
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        sketch.init(metrics);
     }
 
     private void selectTool(ImageView iv){
