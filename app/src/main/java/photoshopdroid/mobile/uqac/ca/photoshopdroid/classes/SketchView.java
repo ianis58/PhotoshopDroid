@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Point;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
@@ -13,18 +14,26 @@ import android.view.View;
 
 import java.util.ArrayList;
 
+import photoshopdroid.mobile.uqac.ca.photoshopdroid.classes.paths.BrushPath;
+import photoshopdroid.mobile.uqac.ca.photoshopdroid.classes.paths.AbstractPath;
+import photoshopdroid.mobile.uqac.ca.photoshopdroid.classes.paths.RectanglePath;
+
 public class SketchView extends View {
+
+    public enum SketchMode {BRUSH, RECTANGLE, TRIANGLE};
 
     private static final float TOUCH_TOLERANCE = 4;
     private float mX, mY;
     private Path mPath;
     private Paint mPaint;
-    private ArrayList<FingerPath> paths = new ArrayList<>();
+    private ArrayList<AbstractPath> paths = new ArrayList<>();
     private int color;
     private int thickness;
     private Bitmap mBitmap;
     private Canvas mCanvas;
     private Paint mBitmapPaint = new Paint(Paint.DITHER_FLAG);
+    private SketchMode drawingMode;
+    private RectanglePath rectangle;
 
     public SketchView(Context context) {
         this(context, null);
@@ -52,6 +61,7 @@ public class SketchView extends View {
 
         color = Color.BLACK;
         thickness = 15;
+        drawingMode = SketchMode.BRUSH;
     }
 
     public void clear() {
@@ -64,10 +74,25 @@ public class SketchView extends View {
         canvas.save();
         mCanvas.drawColor(Color.WHITE);
 
-        for (FingerPath fp : paths) {
+        for (AbstractPath fp : paths) {
             mPaint.setColor(fp.color);
             mPaint.setStrokeWidth(fp.strokeWidth);
-            mCanvas.drawPath(fp.path, mPaint);
+
+            switch (fp.drawingMode){
+                case BRUSH:{
+                    BrushPath bp = (BrushPath) fp;
+                    mCanvas.drawPath(bp.getPath(), mPaint);
+                } break;
+
+                case RECTANGLE:{
+                    RectanglePath rp = (RectanglePath) fp;
+                    mCanvas.drawRect(rp.getLeft(), rp.getTop(), rp.getRight(), rp.getBottom(), mPaint);
+                } break;
+
+                case TRIANGLE:{
+
+                } break;
+            }
         }
 
         canvas.drawBitmap(mBitmap, 0, 0, mBitmapPaint);
@@ -98,29 +123,81 @@ public class SketchView extends View {
     }
 
     private void touchStarted(float x, float y) {
-        mPath = new Path();
-        FingerPath fp = new FingerPath(color, thickness, mPath);
-        paths.add(fp);
 
-        mPath.reset();
-        mPath.moveTo(x, y);
-        mX = x;
-        mY = y;
+        switch (drawingMode){
+            case BRUSH: {
+                mPath = new Path();
+                BrushPath bp = new BrushPath(color, thickness, drawingMode, mPath);
+                paths.add(bp);
+
+                mPath.reset();
+                mPath.moveTo(x, y);
+                mX = x;
+                mY = y;
+            } break;
+
+            case RECTANGLE: {
+                Point origin = new Point((int)x, (int)y);
+                rectangle = new RectanglePath(color, thickness, drawingMode);
+                rectangle.addPoint(origin);
+
+                mX = x;
+                mY = y;
+            } break;
+
+            case TRIANGLE: {
+
+            } break;
+        }
+
+
     }
 
     private void touchMoved(float x, float y) {
-        float dx = Math.abs(x - mX);
-        float dy = Math.abs(y - mY);
 
-        if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
-            mPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
-            mX = x;
-            mY = y;
+        switch (drawingMode) {
+            case BRUSH: {
+                float dx = Math.abs(x - mX);
+                float dy = Math.abs(y - mY);
+
+                if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
+                    mPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
+                    mX = x;
+                    mY = y;
+                }
+            }
+            break;
+
+            case RECTANGLE: {
+                Point destination = new Point((int)x, (int)y);
+                rectangle.addPoint(destination);
+            }
+            break;
+
+            case TRIANGLE: {
+
+            }
+            break;
         }
     }
 
     private void touchEnded() {
-        mPath.lineTo(mX, mY);
+
+        switch (drawingMode){
+            case BRUSH: {
+                mPath.lineTo(mX, mY);
+            } break;
+
+            case RECTANGLE: {
+                if(rectangle.isComplete()){
+                    paths.add(rectangle);
+                }
+            } break;
+
+            case TRIANGLE: {
+
+            } break;
+        }
     }
 
     public void setColor(int color){
@@ -133,5 +210,9 @@ public class SketchView extends View {
 
     public void setThickness(int thickness) {
         this.thickness = thickness;
+    }
+
+    public void setDrawingMode(SketchMode drawingMode) {
+        this.drawingMode = drawingMode;
     }
 }

@@ -3,6 +3,7 @@ package photoshopdroid.mobile.uqac.ca.photoshopdroid.activities;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.support.annotation.ColorInt;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
@@ -25,6 +26,7 @@ public class DrawActivity extends AppCompatActivity {
     private SketchView sketch;
     private View viewColorPicker;
     private ImageView ivBrush;
+    private ImageView ivDrawRectangles;
     private ImageView ivSelectShape;
     private ImageView ivThickness;
     private ImageView ivClearSketch;
@@ -37,6 +39,7 @@ public class DrawActivity extends AppCompatActivity {
         sketch = (SketchView) findViewById(R.id.sketch);
         viewColorPicker = findViewById(R.id.viewColorPicker);
         ivBrush = (ImageView) findViewById(R.id.ivBrush);
+        ivDrawRectangles = (ImageView) findViewById(R.id.ivDrawRectangles);
         ivSelectShape = (ImageView) findViewById(R.id.ivSelectShape);
         ivThickness = (ImageView) findViewById(R.id.ivThickness);
         ivClearSketch = (ImageView) findViewById(R.id.ivClearSketch);
@@ -75,7 +78,8 @@ public class DrawActivity extends AppCompatActivity {
         ivBrush.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                sketch.setDrawingMode(SketchView.SketchMode.BRUSH);
+                selectTool(ivBrush);
             }
         });
 
@@ -83,6 +87,22 @@ public class DrawActivity extends AppCompatActivity {
             @Override
             public boolean onLongClick(View v) {
                 Toast.makeText(getBaseContext(), "Dessin à main levée", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+
+        ivDrawRectangles.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sketch.setDrawingMode(SketchView.SketchMode.RECTANGLE);
+                selectTool(ivDrawRectangles);
+            }
+        });
+
+        ivDrawRectangles.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getBaseContext(), "Dessiner des rectangles", Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
@@ -142,6 +162,20 @@ public class DrawActivity extends AppCompatActivity {
 
         //Bitmap mBitmap = Bitmap.createBitmap(screenWidth, screenHeight, Bitmap.Config.ARGB_8888);
         //Canvas mCanvas = new Canvas(mBitmap);
+    }
+
+    private void selectTool(ImageView iv){
+        ivBrush.setBackgroundColor(Color.TRANSPARENT);
+        ivDrawRectangles.setBackgroundColor(Color.TRANSPARENT);
+        ivClearSketch.setBackgroundColor(Color.TRANSPARENT);
+        ivThickness.setBackgroundColor(Color.TRANSPARENT);
+
+        switch (iv.getId()){
+            case R.id.ivBrush:          ivBrush.setBackgroundColor(Color.parseColor("#CCCCCC"));            break;
+            case R.id.ivDrawRectangles: ivDrawRectangles.setBackgroundColor(Color.parseColor("#CCCCCC"));   break;
+            case R.id.ivClearSketch:    ivClearSketch.setBackgroundColor(Color.parseColor("#CCCCCC"));      break;
+            case R.id.ivThickness:      ivThickness.setBackgroundColor(Color.parseColor("#CCCCCC"));        break;
+        }
     }
 
 }
