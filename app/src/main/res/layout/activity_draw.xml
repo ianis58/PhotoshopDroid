@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/draw_layout"
     android:weightSum="100"
     android:orientation="vertical"
-    tools:context="photoshopdroid.mobile.uqac.ca.photoshopdroid.DrawActivity">
+    tools:context="photoshopdroid.mobile.uqac.ca.photoshopdroid.activities.DrawActivity">
 
-    <photoshopdroid.mobile.uqac.ca.photoshopdroid.SketchView
+    <photoshopdroid.mobile.uqac.ca.photoshopdroid.classes.SketchView
         android:layout_weight="90"
         android:layout_width="match_parent"
         android:id="@+id/sketch"
@@ -18,13 +19,75 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="10"
+        android:weightSum="100"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btnColorPicker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_choose_color" />
+        <HorizontalScrollView
+            android:layout_weight="100"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" >
+
+                <View
+                    android:id="@+id/viewColorPicker"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="10dp"
+                    android:background="#000000" />
+
+                <ImageView
+                    android:id="@+id/ivBrush"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/brush" />
+
+                <ImageView
+                    android:id="@+id/ivSelectShape"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/select_shape" />
+
+                <ImageView
+                    android:id="@+id/ivThickness"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/thickness" />
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/save_sketch" />
+
+                <ImageView
+                    android:id="@+id/ivClearSketch"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/clear_sketch" />
+            </LinearLayout>
+        </HorizontalScrollView>
+
     </LinearLayout>
 
 </LinearLayout>

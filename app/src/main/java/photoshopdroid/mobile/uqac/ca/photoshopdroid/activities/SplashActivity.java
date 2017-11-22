@@ -1,4 +1,4 @@
-package photoshopdroid.mobile.uqac.ca.photoshopdroid;
+package photoshopdroid.mobile.uqac.ca.photoshopdroid.activities;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import photoshopdroid.mobile.uqac.ca.photoshopdroid.R;
 
 public class SplashActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
