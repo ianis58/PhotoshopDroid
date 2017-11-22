@@ -14,10 +14,17 @@
         android:id="@+id/sketch"
         android:layout_height="0dp" />
 
-    <GridView
-        android:id="@+id/gridToolbar"
-        android:layout_weight="10"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_gravity="bottom" />
+        android:layout_weight="10"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnColorPicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_choose_color" />
+    </LinearLayout>
+
 </LinearLayout>
