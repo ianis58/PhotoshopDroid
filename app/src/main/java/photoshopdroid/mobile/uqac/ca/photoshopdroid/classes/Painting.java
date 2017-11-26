@@ -1,8 +1,10 @@
-package photoshopdroid.mobile.uqac.ca.photoshopdroid;
+package photoshopdroid.mobile.uqac.ca.photoshopdroid.classes;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 
 import java.util.ArrayList;
+
+import photoshopdroid.mobile.uqac.ca.photoshopdroid.classes.GeometricShape;
 
 public class Painting {
     public enum PaintingShape {

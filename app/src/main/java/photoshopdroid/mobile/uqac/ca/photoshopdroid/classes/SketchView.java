@@ -150,7 +150,6 @@ public class SketchView extends View {
             } break;
         }
 
-
     }
 
     private void touchMoved(float x, float y) {

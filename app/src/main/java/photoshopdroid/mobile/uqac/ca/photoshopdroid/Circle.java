@@ -1,10 +1,17 @@
-package PACKAGE_NAME;
+package photoshopdroid.mobile.uqac.ca.photoshopdroid;
 
-import photoshopdroid.mobile.uqac.ca.photoshopdroid.GeometricShape;
+import android.graphics.Canvas;
 
-/**
- * Created by Utilisateur on 2017-11-21.
- */
+import photoshopdroid.mobile.uqac.ca.photoshopdroid.classes.GeometricShape;
 
 public class Circle extends GeometricShape {
+
+    public Circle(int color, int width) {
+        super(color, width);
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+
+    }
 }

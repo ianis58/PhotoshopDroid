@@ -1,4 +1,4 @@
-package photoshopdroid.mobile.uqac.ca.photoshopdroid;
+package photoshopdroid.mobile.uqac.ca.photoshopdroid.classes;
 
 import android.graphics.Canvas;
 import java.util.ArrayList;
