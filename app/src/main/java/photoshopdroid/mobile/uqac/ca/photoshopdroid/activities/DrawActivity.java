@@ -171,9 +171,8 @@ public class DrawActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 for (AbstractPath path: sketch.getPaths()) {
-                    if(path.getPathId() == AbstractPath.count){
+                    if(path.getPathId() == AbstractPath.count-1){
                         sketch.getPaths().remove(path);
-                        //est-ce que éditer sketch peut marcher comme ça? pas sûr... à voir
                     }
                 }
 
