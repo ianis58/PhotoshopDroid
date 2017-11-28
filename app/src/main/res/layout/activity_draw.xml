@@ -61,7 +61,7 @@
                     app:srcCompat="@drawable/draw_rectangles" />
 
                 <ImageView
-                    android:id="@+id/ivSelectShape"
+                    android:id="@+id/ivDrawText"
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="10dp"

@@ -3,12 +3,16 @@ package photoshopdroid.mobile.uqac.ca.photoshopdroid.activities;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.support.annotation.ColorInt;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -18,6 +22,7 @@ import com.pes.androidmaterialcolorpickerdialog.ColorPickerCallback;
 import photoshopdroid.mobile.uqac.ca.photoshopdroid.R;
 import photoshopdroid.mobile.uqac.ca.photoshopdroid.classes.SketchView;
 import photoshopdroid.mobile.uqac.ca.photoshopdroid.classes.paths.AbstractPath;
+import photoshopdroid.mobile.uqac.ca.photoshopdroid.classes.paths.TextPath;
 import photoshopdroid.mobile.uqac.ca.photoshopdroid.dialogs.ThicknessDialogFragment;
 
 public class DrawActivity extends AppCompatActivity {
@@ -27,11 +32,13 @@ public class DrawActivity extends AppCompatActivity {
     private ImageView ivBrush;
     private ImageView ivDrawRectangles;
     private ImageView ivUndoLastPath;
-    private ImageView ivSelectShape;
+    private ImageView ivDrawText;
     private ImageView ivThickness;
     private ImageView ivClearSketch;
 
     private ColorPicker cp;
+
+    static public String textDraw;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +102,14 @@ public class DrawActivity extends AppCompatActivity {
             @Override
             public boolean onLongClick(View v) {
                 Toast.makeText(getBaseContext(), "Annuler le dernier tracé", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+
+        ivDrawText.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getBaseContext(), "Ajouter du texte", Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
@@ -185,6 +200,41 @@ public class DrawActivity extends AppCompatActivity {
 
             }
         });
+
+        ivDrawText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(DrawActivity.this);
+                builder.setTitle("Texte à écrire:");
+
+                final EditText input = new EditText(DrawActivity.this);
+                input.setText(textDraw);
+                builder.setView(input);
+
+                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        textDraw = input.getText().toString();
+                        dialog.dismiss();
+                    }
+                });
+
+                builder.setNegativeButton("Effacer", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        textDraw = "";
+                        input.setText(textDraw);
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
+
+                textDraw = input.getText().toString();
+                sketch.setDrawingMode(SketchView.SketchMode.TEXT);
+                selectTool(ivDrawText);
+            }
+        });
+
     }
 
     private void initViews() {
@@ -192,7 +242,7 @@ public class DrawActivity extends AppCompatActivity {
         viewColorPicker = findViewById(R.id.viewColorPicker);
         ivBrush = (ImageView) findViewById(R.id.ivBrush);
         ivDrawRectangles = (ImageView) findViewById(R.id.ivDrawRectangles);
-        ivSelectShape = (ImageView) findViewById(R.id.ivSelectShape);
+        ivDrawText = (ImageView) findViewById(R.id.ivDrawText);
         ivUndoLastPath = (ImageView) findViewById(R.id.ivUndoLastPath);
         ivThickness = (ImageView) findViewById(R.id.ivThickness);
         ivClearSketch = (ImageView) findViewById(R.id.ivClearSketch);
@@ -207,12 +257,14 @@ public class DrawActivity extends AppCompatActivity {
         ivDrawRectangles.setBackgroundColor(Color.TRANSPARENT);
         ivClearSketch.setBackgroundColor(Color.TRANSPARENT);
         ivThickness.setBackgroundColor(Color.TRANSPARENT);
+        ivDrawText.setBackgroundColor(Color.TRANSPARENT);
 
         switch (iv.getId()){
             case R.id.ivBrush:          ivBrush.setBackgroundColor(Color.parseColor("#CCCCCC"));            break;
             case R.id.ivDrawRectangles: ivDrawRectangles.setBackgroundColor(Color.parseColor("#CCCCCC"));   break;
             case R.id.ivClearSketch:    ivClearSketch.setBackgroundColor(Color.parseColor("#CCCCCC"));      break;
             case R.id.ivThickness:      ivThickness.setBackgroundColor(Color.parseColor("#CCCCCC"));        break;
+            case R.id.ivDrawText:       ivDrawText.setBackgroundColor(Color.parseColor("#CCCCCC"));         break;
         }
     }
 

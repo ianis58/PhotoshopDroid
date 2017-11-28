@@ -14,13 +14,15 @@ import android.view.View;
 
 import java.util.ArrayList;
 
+import photoshopdroid.mobile.uqac.ca.photoshopdroid.activities.DrawActivity;
 import photoshopdroid.mobile.uqac.ca.photoshopdroid.classes.paths.BrushPath;
 import photoshopdroid.mobile.uqac.ca.photoshopdroid.classes.paths.AbstractPath;
 import photoshopdroid.mobile.uqac.ca.photoshopdroid.classes.paths.RectanglePath;
+import photoshopdroid.mobile.uqac.ca.photoshopdroid.classes.paths.TextPath;
 
 public class SketchView extends View {
 
-    public enum SketchMode {BRUSH, RECTANGLE, TRIANGLE};
+    public enum SketchMode {BRUSH, RECTANGLE, TRIANGLE, TEXT};
 
     private static final float TOUCH_TOLERANCE = 4;
     private float mX, mY;
@@ -34,6 +36,7 @@ public class SketchView extends View {
     private Paint mBitmapPaint = new Paint(Paint.DITHER_FLAG);
     private SketchMode drawingMode;
     private RectanglePath rectangle;
+    private TextPath textPath;
 
     public SketchView(Context context) {
         this(context, null);
@@ -92,6 +95,11 @@ public class SketchView extends View {
                 case TRIANGLE:{
 
                 } break;
+
+                case TEXT:{
+                    TextPath tp = (TextPath) fp;
+                    mCanvas.drawText(tp.getText(), tp.getPoint().x, tp.getPoint().y, mPaint);
+                } break;
             }
         }
 
@@ -122,6 +130,10 @@ public class SketchView extends View {
         return true;
     }
 
+    public int getColor() {
+        return color;
+    }
+
     private void touchStarted(float x, float y) {
 
         switch (drawingMode){
@@ -147,6 +159,11 @@ public class SketchView extends View {
 
             case TRIANGLE: {
 
+            } break;
+
+            case TEXT: {
+                mPaint.setTextSize(thickness);
+                textPath = new TextPath(color, thickness, SketchMode.TEXT, new Point((int)x, (int)y), DrawActivity.textDraw);
             } break;
         }
 
@@ -178,6 +195,11 @@ public class SketchView extends View {
 
             }
             break;
+
+            case TEXT: {
+                textPath.setPoint(new Point((int)x, (int)y));
+            }
+            break;
         }
     }
 
@@ -196,6 +218,10 @@ public class SketchView extends View {
 
             case TRIANGLE: {
 
+            } break;
+
+            case TEXT: {
+                paths.add(textPath);
             } break;
         }
 
