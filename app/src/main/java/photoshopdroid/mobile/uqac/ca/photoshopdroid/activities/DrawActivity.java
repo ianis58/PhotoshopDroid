@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
@@ -40,6 +41,7 @@ public class DrawActivity extends AppCompatActivity {
     private ColorPicker cp;
 
     static public String textDraw;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -223,6 +225,7 @@ public class DrawActivity extends AppCompatActivity {
                 builder.setTitle("Texte à écrire:");
 
                 final EditText input = new EditText(DrawActivity.this);
+
                 input.setText(textDraw);
                 builder.setView(input);
 

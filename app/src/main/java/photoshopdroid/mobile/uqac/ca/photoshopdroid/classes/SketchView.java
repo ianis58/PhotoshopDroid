@@ -87,6 +87,7 @@ public class SketchView extends View {
                 case BRUSH:{
                     BrushPath bp = (BrushPath) fp;
                     mCanvas.drawPath(bp.getPath(), mPaint);
+
                 } break;
 
                 case RECTANGLE:{
@@ -100,7 +101,7 @@ public class SketchView extends View {
 
                 case TEXT:{
                     TextPath tp = (TextPath) fp;
-                    mCanvas.drawText(tp.getText(), tp.getPoint().x, tp.getPoint().y, mPaint);
+                    mCanvas.drawText(tp.getText(), tp.getPoint().x, tp.getPoint().y, tp.getPaint());
                 } break;
 
                 case CIRCLE:{
@@ -178,8 +179,8 @@ public class SketchView extends View {
             }
 
             case TEXT: {
-                mPaint.setTextSize(thickness);
-                textPath = new TextPath(color, thickness, SketchMode.TEXT, new Point((int)x, (int)y), DrawActivity.textDraw);
+                mPaint.setTextSize(60);
+                textPath = new TextPath(color, 2, SketchMode.TEXT, new Point((int)x, (int)y), DrawActivity.textDraw, mPaint);
             } break;
         }
 
@@ -214,6 +215,7 @@ public class SketchView extends View {
 
             case TEXT: {
                 textPath.setPoint(new Point((int)x, (int)y));
+
             }
             break;
 
