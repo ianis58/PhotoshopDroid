@@ -20,7 +20,7 @@ public class CirclePath extends AbstractPath {
     public Point getCenter(){
         return center;
     }
-
+//TODO: enlever ce todo
     public float getRadius(){
         return radius;
     }
