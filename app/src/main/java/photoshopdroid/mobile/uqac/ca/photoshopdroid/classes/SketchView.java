@@ -17,12 +17,13 @@ import java.util.ArrayList;
 import photoshopdroid.mobile.uqac.ca.photoshopdroid.activities.DrawActivity;
 import photoshopdroid.mobile.uqac.ca.photoshopdroid.classes.paths.BrushPath;
 import photoshopdroid.mobile.uqac.ca.photoshopdroid.classes.paths.AbstractPath;
+import photoshopdroid.mobile.uqac.ca.photoshopdroid.classes.paths.CirclePath;
 import photoshopdroid.mobile.uqac.ca.photoshopdroid.classes.paths.RectanglePath;
 import photoshopdroid.mobile.uqac.ca.photoshopdroid.classes.paths.TextPath;
 
 public class SketchView extends View {
 
-    public enum SketchMode {BRUSH, RECTANGLE, TRIANGLE, TEXT};
+    public enum SketchMode {BRUSH, RECTANGLE, TRIANGLE, TEXT, CIRCLE};
 
     private static final float TOUCH_TOLERANCE = 4;
     private float mX, mY;
@@ -37,6 +38,7 @@ public class SketchView extends View {
     private SketchMode drawingMode;
     private RectanglePath rectangle;
     private TextPath textPath;
+    private CirclePath circle;
 
     public SketchView(Context context) {
         this(context, null);
@@ -100,6 +102,11 @@ public class SketchView extends View {
                     TextPath tp = (TextPath) fp;
                     mCanvas.drawText(tp.getText(), tp.getPoint().x, tp.getPoint().y, mPaint);
                 } break;
+
+                case CIRCLE:{
+                    CirclePath cp = (CirclePath) fp;
+                    mCanvas.drawCircle(cp.getCenter().x, cp.getCenter().y, cp.getRadius(), mPaint);
+                }
             }
         }
 
@@ -161,6 +168,15 @@ public class SketchView extends View {
 
             } break;
 
+            case CIRCLE:{
+                Point origin = new Point((int) x, (int) y);
+                circle = new CirclePath(color, thickness, drawingMode);
+                circle.defineOrigin(origin);
+
+                mX = x;
+                mY = y;
+            }
+
             case TEXT: {
                 mPaint.setTextSize(thickness);
                 textPath = new TextPath(color, thickness, SketchMode.TEXT, new Point((int)x, (int)y), DrawActivity.textDraw);
@@ -200,6 +216,11 @@ public class SketchView extends View {
                 textPath.setPoint(new Point((int)x, (int)y));
             }
             break;
+
+            case CIRCLE:{
+                circle.defineRadius(new Point((int) x, (int) y));
+            }
+            break;
         }
     }
 
@@ -223,6 +244,12 @@ public class SketchView extends View {
             case TEXT: {
                 paths.add(textPath);
             } break;
+
+            case CIRCLE: {
+                if (circle.isValid()){
+                    paths.add(circle);
+                }
+            }
         }
 
         AbstractPath.count++;

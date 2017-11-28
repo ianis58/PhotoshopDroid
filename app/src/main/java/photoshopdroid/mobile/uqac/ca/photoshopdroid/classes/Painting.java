@@ -1,10 +1,7 @@
 package photoshopdroid.mobile.uqac.ca.photoshopdroid.classes;
+
 import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
-
 import java.util.ArrayList;
-
-import photoshopdroid.mobile.uqac.ca.photoshopdroid.classes.GeometricShape;
 
 public class Painting {
     public enum PaintingShape {
@@ -26,6 +23,8 @@ public class Painting {
 
     // Objets présents dans le dessin
     private ArrayList<GeometricShape> shapes;
+    private GeometricShape selectedShape;
+    private GeometricShape buildtShape;
     private Canvas canvas;
 
     public Painting(){
@@ -35,11 +34,19 @@ public class Painting {
         // Initialization of the painting and its items
         canvas = new Canvas();
         shapes = new ArrayList<GeometricShape>();
+        selectedShape = null;
     }
 
     public void RefreshPainting(){
         for (GeometricShape d : shapes){
-            d.draw(canvas);
+            d.drawShape(canvas);
+        }
+    }
+
+    public void SelectShape(GeometricShape gs){
+        if (gs != selectedShape) {
+            selectedShape.deslect();
+            gs.select();
         }
     }
 
@@ -50,6 +57,10 @@ public class Painting {
 
     public void SelectStrokeWidth(PaintingWidth width){
         currentStrokeWidth = width;
+    }
+
+    public void BuildShape(GeometricShape.ShapeType type){
+
     }
 
     public void AddShape(GeometricShape d){

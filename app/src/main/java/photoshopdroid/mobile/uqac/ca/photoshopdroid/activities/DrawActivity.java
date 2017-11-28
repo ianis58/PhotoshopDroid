@@ -35,6 +35,7 @@ public class DrawActivity extends AppCompatActivity {
     private ImageView ivDrawText;
     private ImageView ivThickness;
     private ImageView ivClearSketch;
+    private ImageView ivCircle;
 
     private ColorPicker cp;
 
@@ -52,8 +53,6 @@ public class DrawActivity extends AppCompatActivity {
         //pour plus de details, voir : https://github.com/Pes8/android-material-color-picker-dialog
         cp = new ColorPicker(DrawActivity.this);
         setColorPickerDialogCallback();
-
-
     }
 
     private void setImageViewsOnLongClickListeners() {
@@ -113,6 +112,14 @@ public class DrawActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        ivCircle.setOnLongClickListener(new View.OnLongClickListener(){
+            @Override
+            public boolean onLongClick(View v){
+                Toast.makeText(getBaseContext(), "Dessiner des cercles", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
     }
 
     private void setColorPickerDialogCallback() {
@@ -148,6 +155,14 @@ public class DrawActivity extends AppCompatActivity {
             public void onClick(View v) {
                 sketch.setDrawingMode(SketchView.SketchMode.RECTANGLE);
                 selectTool(ivDrawRectangles);
+            }
+        });
+
+        ivCircle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sketch.setDrawingMode(SketchView.SketchMode.CIRCLE);
+                selectTool(ivCircle);
             }
         });
 
@@ -234,7 +249,6 @@ public class DrawActivity extends AppCompatActivity {
                 selectTool(ivDrawText);
             }
         });
-
     }
 
     private void initViews() {
@@ -246,6 +260,7 @@ public class DrawActivity extends AppCompatActivity {
         ivUndoLastPath = (ImageView) findViewById(R.id.ivUndoLastPath);
         ivThickness = (ImageView) findViewById(R.id.ivThickness);
         ivClearSketch = (ImageView) findViewById(R.id.ivClearSketch);
+        ivCircle = (ImageView) findViewById(R.id.ivCircle);
 
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -258,6 +273,7 @@ public class DrawActivity extends AppCompatActivity {
         ivClearSketch.setBackgroundColor(Color.TRANSPARENT);
         ivThickness.setBackgroundColor(Color.TRANSPARENT);
         ivDrawText.setBackgroundColor(Color.TRANSPARENT);
+        ivCircle.setBackgroundColor(Color.TRANSPARENT);
 
         switch (iv.getId()){
             case R.id.ivBrush:          ivBrush.setBackgroundColor(Color.parseColor("#CCCCCC"));            break;
@@ -265,6 +281,7 @@ public class DrawActivity extends AppCompatActivity {
             case R.id.ivClearSketch:    ivClearSketch.setBackgroundColor(Color.parseColor("#CCCCCC"));      break;
             case R.id.ivThickness:      ivThickness.setBackgroundColor(Color.parseColor("#CCCCCC"));        break;
             case R.id.ivDrawText:       ivDrawText.setBackgroundColor(Color.parseColor("#CCCCCC"));         break;
+            case R.id.ivCircle:         ivCircle.setBackgroundColor(Color.parseColor("#CCCCCC"));           break;
         }
     }
 
