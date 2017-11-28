@@ -79,7 +79,16 @@
                     app:srcCompat="@drawable/thickness" />
 
                 <ImageView
-                    android:id="@+id/imageView3"
+                    android:id="@+id/ivUndoLastPath"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/undo_last_path" />
+
+                <ImageView
+                    android:id="@+id/ivSaveSketch"
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="10dp"

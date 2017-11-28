@@ -17,6 +17,7 @@ import com.pes.androidmaterialcolorpickerdialog.ColorPickerCallback;
 
 import photoshopdroid.mobile.uqac.ca.photoshopdroid.R;
 import photoshopdroid.mobile.uqac.ca.photoshopdroid.classes.SketchView;
+import photoshopdroid.mobile.uqac.ca.photoshopdroid.classes.paths.AbstractPath;
 import photoshopdroid.mobile.uqac.ca.photoshopdroid.dialogs.ThicknessDialogFragment;
 
 public class DrawActivity extends AppCompatActivity {
@@ -25,6 +26,7 @@ public class DrawActivity extends AppCompatActivity {
     private View viewColorPicker;
     private ImageView ivBrush;
     private ImageView ivDrawRectangles;
+    private ImageView ivUndoLastPath;
     private ImageView ivSelectShape;
     private ImageView ivThickness;
     private ImageView ivClearSketch;
@@ -85,6 +87,14 @@ public class DrawActivity extends AppCompatActivity {
             @Override
             public boolean onLongClick(View v) {
                 Toast.makeText(getBaseContext(), "Changer l'épaisseur des tracés", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+
+        ivUndoLastPath.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getBaseContext(), "Annuler le dernier tracé", Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
@@ -156,6 +166,26 @@ public class DrawActivity extends AppCompatActivity {
                 confirmClear.show();
             }
         });
+
+        ivUndoLastPath.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (AbstractPath path: sketch.getPaths()) {
+                    if(path.getPathId() == AbstractPath.count){
+                        sketch.getPaths().remove(path);
+                        //est-ce que éditer sketch peut marcher comme ça? pas sûr... à voir
+                    }
+                }
+
+                sketch.getPaths().trimToSize();
+
+                if(AbstractPath.count > 1){
+                    AbstractPath.count--;
+                }
+                sketch.invalidate();
+
+            }
+        });
     }
 
     private void initViews() {
@@ -164,6 +194,7 @@ public class DrawActivity extends AppCompatActivity {
         ivBrush = (ImageView) findViewById(R.id.ivBrush);
         ivDrawRectangles = (ImageView) findViewById(R.id.ivDrawRectangles);
         ivSelectShape = (ImageView) findViewById(R.id.ivSelectShape);
+        ivUndoLastPath = (ImageView) findViewById(R.id.ivUndoLastPath);
         ivThickness = (ImageView) findViewById(R.id.ivThickness);
         ivClearSketch = (ImageView) findViewById(R.id.ivClearSketch);
 

@@ -163,6 +163,7 @@ public class SketchView extends View {
                     mPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
                     mX = x;
                     mY = y;
+
                 }
             }
             break;
@@ -197,6 +198,12 @@ public class SketchView extends View {
 
             } break;
         }
+
+        AbstractPath.count++;
+    }
+
+    public ArrayList<AbstractPath> getPaths() {
+        return paths;
     }
 
     public void setColor(int color){
